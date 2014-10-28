@@ -150,7 +150,7 @@ public class Operation {
 			System.out.println("please input student name "+goMainMenu+":");
 			String name = scan.next();
 			//If the command is not the command making program going back to main menu.
-			if (!name.equalsIgnoreCase(mainMenuCmd)) {
+			if (!name.equalsIgnoreCase(mainMenuCmd)) { 
 				//Checking whether the name of competitor exists or not.
 				boolean isExisting = ds.checkExistingOfCompetitor(name);
 				if (isExisting) {
