@@ -12,44 +12,59 @@ import model.Competition;
 * @since:  JDK 1.7
 * Create at:   Oct 25, 2014 11:10:11 PM   
 * Description:  
-*   
+*   This class basically is a reused or modified class from my classmate Yuanyuan Kang.
+*   I kept most of those methods same with slight modification such as changing variables' 
+*   names and etc..
 * Modification History:   
 * Date    Author      Version     Description   
 * ----------------------------------------------------------------- 
 * Oct 25, 2014 Han Chen      1.0     1.0 Version   
 */    
 public class ReusingMethods implements ReusingMethodsInterface {
-	/** $REUSING
+	/** $REUSING method. I basically rewrite the original method totally
+	 *  because the the original one cannot approach the purpose.
 	 * divide the competitions to several lists based on the school
 	 * @param arrayList
 	 * @return a list which contains several lists divided by school
 	 */
 	public List<List<Competition>> divide(List<Competition> input)
 	{
-		//create the list which contains the card divided by school
+		//Create the list which contains the competitions divided by school.
 		List<List<Competition>> output = new ArrayList<List<Competition>>();
 		String school;
+		
+		//Create a list to memorize the school has been added.
 		List<String> gettenSchools = new ArrayList<String>();
 		for(Competition competition : input)
 		{
-	        // the the school of each card
+	        //The the school of each competition.
 			school = competition.getSchool();
-			if(gettenSchools.contains(school)){
-				int index = gettenSchools.indexOf(school);
-				output.get(index).add(competition);
+			
+			/**
+			 * If school has already been added to @output list, the competition which the school belongs to 
+			 * will be added to the list of that school's competitions. OW a new list will be created as the new
+			 * element of output list right behind the last existed one. The order of adding new competition to
+			 * @gettenSchools list and @output list is same because the not existed school will be added to each list
+			 * at same time.
+			 */
+			if(gettenSchools.contains(school)){//If the school has already been added to @output list.
+				int index = gettenSchools.indexOf(school);//Get the @index of the school which has already been added.
+				output.get(index).add(competition);//Use the @index to add this competition to the list of which it belongs to.
 			}
-			else{
-				gettenSchools.add(school);
+			else{//If the school has never been added to @output list.
+				gettenSchools.add(school);//Mark this school in @gettenSchools list right behind the last one.
+				//Create a new list to contain this competition for being allowed to be added into @output list.
 				List<Competition> temp = new ArrayList<Competition>();
-				temp.add(competition);
+				temp.add(competition);//Add this competition to the @temp list.
+				//Add this @temp list to @output list right behind the last one. Therefore the order will be same with @gettenSchools list.
 				output.add(temp);
 			}
 		}
 		return output;
 	}
 	
-	/** $REUSING
-	 * ascend the cards based on the value
+	/** $REUSING method. Without changing it too much.
+	 * Sort the competitions ascendingly based on the score.
 	 * @param list
 	 * @return the list contains the ascending sort cards
 	 */
@@ -74,8 +89,8 @@ public class ReusingMethods implements ReusingMethodsInterface {
 			return input;
 	}
 	
-	/** $REUSING
-	 * calculate the total score of the cards in the list
+	/** $REUSING method. No changing basically.
+	 * Calculate the total score of the Competitions in the list
 	 * @param list
 	 * @return the total score
 	 */
@@ -91,8 +106,8 @@ public class ReusingMethods implements ReusingMethodsInterface {
 		return score;
 	}
 
-	/**
-	 * get the winner
+	/**$REUSING method. No changing except variable name changing.
+	 * Get the winner
 	 * @param score[], schools[]
 	 * @return the result with the winner
 	 */
@@ -135,7 +150,8 @@ public class ReusingMethods implements ReusingMethodsInterface {
 	}
 	
 	/**
-	 *sort the card order and show the result.
+	 * $ REUSING method. Basically I didn't change it except some variable names.
+	 * sort the card order and show the result.
 	 * @param cardBySuit
 	 * @return each school of the cards with 
 	 */
@@ -152,7 +168,7 @@ public class ReusingMethods implements ReusingMethodsInterface {
 		//traverse the each list in the list of input divided by the school
 		for(int i=0; i<input.size(); i++)
 		{
-			//get each list based on school in the ascend order 
+			//get each list based on school in the ascending order 
 			List<Competition> sortedCompetition = ascendSort(input.get(i));
 			
 			//get the first competition of each list
@@ -177,21 +193,25 @@ public class ReusingMethods implements ReusingMethodsInterface {
 			score[i] = totalScore;
 			schools[i] = competition.getSchool();
 			
+			//print out the formula
 			result += "= "+totalScore+"\n";
 		}
+		//If there is no record of this competition at all.
 		if(score.length<1||schools.length<1) return "There is no school enrolled in this competition yet.";
+		//Get the highest score. For more details please check corresponding method.
 		result += getWinner(score, schools);
 		
 		return result;
 	}
 	
 	/**
-	 * $REUSING
+	 * $REUSING I rewrite the @toString method from above to print out the winning student in each competition.
+	 * The method works same way with  @toString method. If you want more details please check it above.
 	 * @param input
 	 * @return winner
 	 */
 	public String printWinner(List<Competition> input){
-		String winner = "";
+		String winner="";
 		List<Competition> temp = ascendSort(input);
 		int[] scores = new int[input.size()];
 		String[] names = new String[input.size()];

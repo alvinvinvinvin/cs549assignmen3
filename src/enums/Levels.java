@@ -8,7 +8,7 @@ package enums;
 * @since:  JDK 1.7
 * Create at:   Oct 25, 2014 2:37:47 AM   
 * Description:  
-*   
+*   The class contains the enumeration of levels of competition based on requirement.
 * Modification History:   
 * Date    			Author      Version     Description   
 * ----------------------------------------------------------------- 

@@ -9,7 +9,10 @@ import enums.Levels.LEVEL;
 * @since:  JDK 1.7
 * Create at:   Oct 24, 2014 11:11:14 PM   
 * Description:  
-*   
+*   The model class of Competition. I supposed to declared a comparable
+*    interface for sorting competition list by scores. However for approaching
+*    the requirement to reuse the code from classmates I chose to keep this function
+*    but to reuse her code to sort the competition list.
 * Modification History:   
 * Date    			Author      Version     Description   
 * ----------------------------------------------------------------- 
@@ -17,10 +20,10 @@ import enums.Levels.LEVEL;
 */
 public class Competition implements Comparable<Competition> {
 
-	private int score;
-	private String school;
-	private String name;
-	private LEVEL level;
+	private int score =0;
+	private String school = null;
+	private String name = null;
+	private LEVEL level = null;
 	
 	/**
 	 * Constructors.

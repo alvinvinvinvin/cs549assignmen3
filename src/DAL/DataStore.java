@@ -12,7 +12,8 @@ import enums.Levels.LEVEL;
 * @since:  JDK 1.7
 * Create at:   Oct 24, 2014 11:16:02 PM   
 * Description:  
-*   
+*   This class will play the role to communicate with database and
+*   to deal with the data gotten from database.
 * Modification History:   
 * Date    Author      Version     Description   
 * ----------------------------------------------------------------- 
@@ -21,11 +22,14 @@ import enums.Levels.LEVEL;
 
 public class DataStore {
 	
+	//Instantiate a connection for connecting to database.
 	static Connection con = null;
+	//Set tables names as variables for extensibility
 	private static final String COMPETITOR_TABLE_NAME = "competitor";
 	private static final String COMPETITION_TABLE_NAME = "competition";
 	
 	/**
+	 * Statements for connecting to database.
 	 * @param db Data file name.
 	 */
 	public DataStore(String db){	
@@ -39,9 +43,9 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param name
-	 * @return
+	 * For ensuring the name of student is unique.
+	 * @param name Student name.
+	 * @return true/false.
 	 */
 	public boolean checkExistingOfCompetitor(String name){
 		try {
@@ -58,9 +62,9 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param c
-	 * @return
+	 * For ensuring whether the student is in any competition or not.
+	 * @param name Student name.
+	 * @return true/false.
 	 */
 	public boolean checkExistingOfCompetition(String name){
 		try {
@@ -77,10 +81,10 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param name
-	 * @param lv
-	 * @return
+	 * Checking whether the student has already enrolled in particular level of competition or not.
+	 * @param name Student name.
+	 * @param lv The level of competition.
+	 * @return true/false.
 	 */
 	public boolean checkExistingOfCompetitionWithLv(String name, String lv){
 		try {
@@ -97,7 +101,7 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
+	 * Adding a new student to competitor table.
 	 * @param c The competitor going to be added.
 	 * @return true/false The result of operation.
 	 */
@@ -113,9 +117,9 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
+	 * This method will get a initialized Competitor from competitor table by student name.
 	 * @param name
-	 * @return
+	 * @return c The competitor.
 	 */
 	public Competitor getCompetitorFromCompetitorTableByName(String name){
 		Competitor c = new Competitor();
@@ -132,9 +136,9 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param name
-	 * @return
+	 * This method will return a list of competitions which the particular student has enrolled getting by student name
+	 * @param name Student name.
+	 * @return c The list of competitions.
 	 */
 	public List<Competition> getCompetitionsFromCompetitionTableByName(String name){
 		List<Competition> c = new ArrayList<Competition>();
@@ -157,9 +161,9 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param c
-	 * @return lv
+	 * Counting how many levels has already been enrolled by competitor from input competition list.
+	 * @param c Competition list.
+	 * @return lv The levels' list.
 	 */
 	public List<LEVEL> getLevelsFromCompetition(List<Competition> c){
 		List<LEVEL> lv = new ArrayList<LEVEL>();
@@ -170,13 +174,13 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param name
+	 * To delete a competitor from competitor table by his/her name.
+	 * @param name Student name.
 	 */
 	public void deleteCompetitorFromCompetitorTable(String name){
 		try {
 			Statement s = con.createStatement();
-			s.executeUpdate("delet from "+COMPETITOR_TABLE_NAME
+			s.executeUpdate("delete from "+COMPETITOR_TABLE_NAME
 					+" where name='"+name+"'");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -185,8 +189,8 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param n
+	 * Adding a competitor to a instantiated competition.
+	 * @param n The competition which has been instantiated previously.
 	 */
 	public void addCompetitorToCompetition(Competition n){
 		try {
@@ -200,13 +204,13 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
+	 * Deleting specific competitor's all records from competition table by his/her name.
 	 * @param name
 	 */
 	public void deleteCompetitorFromCompetitionTable(String name){
 		try {
 			Statement s = con.createStatement();
-			s.executeUpdate("delet from "+COMPETITION_TABLE_NAME
+			s.executeUpdate("delete from "+COMPETITION_TABLE_NAME
 					+" where name='"+name+"'");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -215,14 +219,14 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param name
-	 * @param lv
+	 * Deleting competitor's record from particular level of competition by his name and the level user chose.
+	 * @param name Student name.
+	 * @param lv The level user chose.
 	 */
 	public void deleteCompetitorFromCompetitionTableByLv(String name, String lv){
 		try {
 			Statement s = con.createStatement();
-			s.executeUpdate("delet from "+COMPETITION_TABLE_NAME
+			s.executeUpdate("delete from "+COMPETITION_TABLE_NAME
 					+" where name='"+name+"' and level='"+lv+"'");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -231,8 +235,8 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getting all competitors instantiation from competitor table and set them to be a list.
+	 * @return competitors The list of instantiated competitors.
 	 */
 	public List<Competitor> getAllCompetitor(){
 		Statement s;
@@ -251,8 +255,8 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getting all competitions instantiation from competition table and set them to be a list.
+	 * @return competitions The list of instantiated competitions.
 	 */
 	public List<Competition> getAllCompetition(){
 		Statement s;
@@ -272,9 +276,9 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
-	 * @param lv
-	 * @return competitions
+	 * This method will return a list of competitions by the specific level inputed by user.
+	 * @param lv The level of competition.
+	 * @return competitions The result of querying.
 	 */
 	public List<Competition> getCompetitionByLv(String lv){
 		Statement s;
@@ -294,7 +298,8 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
+	 * The method will print the list of competitors
+	 * @param competitors The list of competitors we will print.
 	 */
 	public void printCompetitors(List<Competitor> competitors){
 		System.out.println("----------------------------");
@@ -309,7 +314,8 @@ public class DataStore {
 	}
 	
 	/**
-	 * 
+	 * The method will print the list of competitors.
+	 * @param competitions The list of competitors we will print.
 	 */
 	public void printCompetitions(List<Competition> competitions){
 		System.out.println();
@@ -321,25 +327,6 @@ public class DataStore {
 			System.out.printf("%-40s%-13s%-13s%-13s\n",c.getLevel(),c.getName(),c.getSchool(),c.getScore());
 		}
 		System.out.println("-------------------------------------------------------------------------------");
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public List<String> getSchools(){
-		List<String> schools = new ArrayList<String>();
-		try {
-			Statement s = con.createStatement();
-			ResultSet r = s.executeQuery("select distinct school from "+COMPETITION_TABLE_NAME);
-			while(r.next()){
-				schools.add(r.getString(0));
-			}			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return schools;
 	}
 	
 	

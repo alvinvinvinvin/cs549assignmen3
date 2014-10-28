@@ -7,7 +7,7 @@
 * @since:  JDK 1.7
 * Create at:   Oct 24, 2014 11:59:08 PM   
 * Description:  
-*   
+*   The Start class contains the main method of the program.
 * Modification History:   
 * Date    			Author      Version     Description   
 * ----------------------------------------------------------------- 

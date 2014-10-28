@@ -9,7 +9,9 @@ package model;
 * Create at:   Oct 24, 2014 10:56:17 PM   
 * Description:  
 * 
-*   This class is the model class of Competitor.
+*   This class is the model class of Competitor. It is hard to 
+*   say whether it is reused from my classmate's Card class 
+*   because basically model classes look similar.
 *   
 * Modification History:   
 * Date    			Author      Version     Description   
@@ -72,7 +74,7 @@ public class Competitor{
 		return "<" + this.getName() + "	     " + this.getSchool() + "> \n";
 	}
 	
-	private String name;
-	private String school;
+	private String name = null;
+	private String school = null;
 }
  
