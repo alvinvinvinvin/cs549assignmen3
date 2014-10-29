@@ -40,6 +40,9 @@ public class Operation {
 		System.out.println();
 		System.out.println("\nWelcom to The Wisconsin Music Association for Youngsters (WMAY)!");
 		System.out.println();
+		System.out.println();
+		System.out.println("We strongly recommend you to maximize the window size for using conveniently.");
+		System.out.println();
 		
 		/**
 		 * By using while loop the program will keep running until user intents to exit it.
@@ -490,7 +493,7 @@ public class Operation {
 						System.out.println("The competition result of level "+lvString+" is:");
 						/**
 						 * Notice that the @ds.getCompetitionByLv method only generate random result for one time.
-						 * In other words, this portion is the ONLY ONE TIME during the whole program to generate a random 
+						 * In other words, this portion is the @ONLY_TIME during the whole program to generate a random 
 						 * result based on the current record information which is without any score or with old score from database.
 						 */
 						List<Competition> randomScoreCompetitions = ds.getCompetitionByLv(level);

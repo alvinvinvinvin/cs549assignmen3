@@ -21,42 +21,45 @@ import model.Competition;
 */     
 public interface ReusingMethodsInterface {
 	
-	/** $REUSING
-	 * divide the suit to several lists based on the suit
-	 * @param arrayList
-	 * @return a list which contains several lists divided by suit
+	/** $REUSING method. I basically rewrite the original method totally
+	 *  because the the original one cannot approach the purpose.
+	 * Divide the competitions to several lists based on the school
+	 * @param input
+	 * @return a list which contains several lists divided by school
 	 */
 	public List<List<Competition>> divide(List<Competition> input);
 	
-	/** $REUSING
-	 * ascend the cards based on the value
-	 * @param list
-	 * @return the list contains the ascending sort cards
+	/** $REUSING method. Without changing it too much.
+	 * Sort the competitions ascendingly based on the score.
+	 * @param input
+	 * @return the list contains the ascending sort competitions
 	 */
 	public List<Competition> ascendSort(List<Competition> input);
 	
-	/** $REUSING
-	 * calculate the total score of the cards in the list
-	 * @param list
+	/** $REUSING method. No changing basically.
+	 * Calculate the total score of the Competitions in the list
+	 * @param input
 	 * @return the total score
 	 */
 	public int getTotalScore(List<Competition> list);
 	
-	/**
-	 * get the winner
-	 * @param score[], suitType[]
+	/** $REUSING method. No changing except variable name changing.
+	 * Get the winner
+	 * @param score[], schools[]
 	 * @return the result with the winner
 	 */
 	public String getWinner(int score[], String schools[]);
 	/**
-	 *sort the card order and show the result.
-	 * @param cardBySuit
-	 * @return each suit of the cards with 
+	 * $ REUSING method. Basically I didn't change it except some variable names.
+	 * sort the competition order and show the result.
+	 * @param input
+	 * @return each school of the competitions with 
 	 */
 	public String toString(List<List<Competition>> input);
 	
 	/**
-	 * $REUSING
+	 * $REUSING I rewrite the @toString method from above to print out the winning student in each competition.
+	 * The method works same way with  @toString method. If you want more details please check it above.
 	 * @param input
 	 * @return winner
 	 */

@@ -36,13 +36,15 @@ public class Competition implements Comparable<Competition> {
 	 */
 	public Competition() {}
 	/**
+	 * This constructor will be used for that when user wants to 
+	 * generate a competition with random score.
 	 * @param score
 	 * @param school
 	 * @param name
 	 * @param level
 	 */
 	public Competition(String school, String name, String level) {
-		setScore();
+		setScore();//This is for generating random score competitions.
 		this.school = school;
 		this.name = name;
 		this.level = convertLv(level);
@@ -58,7 +60,7 @@ public class Competition implements Comparable<Competition> {
 		this.score = score;
 		this.school = school;
 		this.name = name;
-		this.level = convertLv(level);
+		this.level = convertLv(level);//Convert string from database to enumeration.
 	}
 	/**
 	 * @return the score
@@ -67,6 +69,7 @@ public class Competition implements Comparable<Competition> {
 		return score;
 	}
 	/**
+	 * This set method will generate a random score.
 	 * @param score the score to set
 	 */
 	public void setScore() {
@@ -125,7 +128,8 @@ public class Competition implements Comparable<Competition> {
 		this.level = lv;
 	}
 	/**
-	 * 
+	 * This method will get the name of corresponding enumeration of level
+	 * to save it as level field in database.
 	 * @param lv
 	 * @return
 	 */
@@ -134,7 +138,7 @@ public class Competition implements Comparable<Competition> {
 	}
 	
 	/**
-	 * 
+	 * This method will return corresponding enumeration value based on the input string,
 	 * @param lv
 	 * @return
 	 */
@@ -149,9 +153,10 @@ public class Competition implements Comparable<Competition> {
 	}
 	
 	/**
-	 * 
+	 * compareTo method, which was meant to be used for sorting competitions by score.
+	 * According to reuse the sorting method from other classmate, I didn't use this method yet.
 	 * @param o
-	 * @return
+	 * @return res
 	 */
 	@Override
 	public int compareTo(Competition o) {

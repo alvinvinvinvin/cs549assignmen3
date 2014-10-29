@@ -23,8 +23,8 @@ import model.Competition;
 public class ReusingMethods implements ReusingMethodsInterface {
 	/** $REUSING method. I basically rewrite the original method totally
 	 *  because the the original one cannot approach the purpose.
-	 * divide the competitions to several lists based on the school
-	 * @param arrayList
+	 * Divide the competitions to several lists based on the school
+	 * @param input
 	 * @return a list which contains several lists divided by school
 	 */
 	public List<List<Competition>> divide(List<Competition> input)
@@ -65,8 +65,8 @@ public class ReusingMethods implements ReusingMethodsInterface {
 	
 	/** $REUSING method. Without changing it too much.
 	 * Sort the competitions ascendingly based on the score.
-	 * @param list
-	 * @return the list contains the ascending sort cards
+	 * @param input
+	 * @return the list contains the ascending sort competitions
 	 */
 	public List<Competition> ascendSort(List<Competition> input)
 	{
@@ -91,7 +91,7 @@ public class ReusingMethods implements ReusingMethodsInterface {
 	
 	/** $REUSING method. No changing basically.
 	 * Calculate the total score of the Competitions in the list
-	 * @param list
+	 * @param input
 	 * @return the total score
 	 */
 	public int getTotalScore(List<Competition> input)
@@ -151,9 +151,9 @@ public class ReusingMethods implements ReusingMethodsInterface {
 	
 	/**
 	 * $ REUSING method. Basically I didn't change it except some variable names.
-	 * sort the card order and show the result.
-	 * @param cardBySuit
-	 * @return each school of the cards with 
+	 * sort the competition order and show the result.
+	 * @param input
+	 * @return each school of the competitions with 
 	 */
 	public String toString(List<List<Competition>> input)
 	{
@@ -182,9 +182,9 @@ public class ReusingMethods implements ReusingMethodsInterface {
 			//traverse the list and show the result
 			for(int j=1; j<sortedCompetition.size(); j++)
 			{
-				Competition infor = (Competition) sortedCompetition.get(j);
+				Competition competitionInfor = (Competition) sortedCompetition.get(j);
 				
-				result += "+ "+infor.getScore()+" ";
+				result += "+ "+competitionInfor.getScore()+" ";
 			}
 			//get the TotalScore of each school 
 			int totalScore = getTotalScore(sortedCompetition);
