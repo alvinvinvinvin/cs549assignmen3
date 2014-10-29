@@ -94,11 +94,11 @@ public class ReusingMethods implements ReusingMethodsInterface {
 	 * @param list
 	 * @return the total score
 	 */
-	public int getTotalScore(List<Competition> list)
+	public int getTotalScore(List<Competition> input)
 	{
 		int score = 0;
 		
-		for(Competition competitions : list)
+		for(Competition competitions : input)
 		{
 			score += competitions.getScore();
 		}

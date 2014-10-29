@@ -32,10 +32,10 @@ public class DataStore {
 	 * Statements for connecting to database.
 	 * @param db Data file name.
 	 */
-	public DataStore(String db){	
+	public DataStore(String databaseName){	
 		try {
 			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:" + db);
+			con = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName()+ ":"+e.getMessage()+"\n");
 			System.out.println(e.getMessage());
@@ -105,11 +105,11 @@ public class DataStore {
 	 * @param c The competitor going to be added.
 	 * @return true/false The result of operation.
 	 */
-	public void addCompetitor(Competitor c){
+	public void addCompetitor(Competitor competitor){
 		try {
 			Statement s = con.createStatement();
 			s.executeUpdate("insert into "+COMPETITOR_TABLE_NAME
-					+" values('"+c.getName()+"','"+c.getSchool()+"')");
+					+" values('"+competitor.getName()+"','"+competitor.getSchool()+"')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,17 +122,17 @@ public class DataStore {
 	 * @return c The competitor.
 	 */
 	public Competitor getCompetitorFromCompetitorTableByName(String name){
-		Competitor c = new Competitor();
+		Competitor competitor = new Competitor();
 		try {
 			Statement s = con.createStatement();
 			ResultSet r = s.executeQuery("select * from "+COMPETITOR_TABLE_NAME+" where name='"+name+"'");
-			c.setName(r.getString("name"));
-			c.setSchool(r.getString("school"));
+			competitor.setName(r.getString("name"));
+			competitor.setSchool(r.getString("school"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return c;
+		return competitor;
 	}
 	
 	/**
@@ -141,13 +141,13 @@ public class DataStore {
 	 * @return c The list of competitions.
 	 */
 	public List<Competition> getCompetitionsFromCompetitionTableByName(String name){
-		List<Competition> c = new ArrayList<Competition>();
+		List<Competition> competitions = new ArrayList<Competition>();
 		try {
 			Statement s = con.createStatement();
 			ResultSet r = s.executeQuery("select * from "+COMPETITION_TABLE_NAME+" where name='"+name+"'");
 			while(r.next()){
-				c.add(
-						new Competition(
+				competitions.add(
+						new Competition(Integer.parseInt(r.getString("score")),
 								r.getString("school"),
 								r.getString("name"),
 								r.getString("level")));
@@ -156,7 +156,7 @@ public class DataStore {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return c;
+		return competitions;
 	}
 	
 	/**
@@ -191,11 +191,11 @@ public class DataStore {
 	 * Adding a competitor to a instantiated competition.
 	 * @param n The competition which has been instantiated previously.
 	 */
-	public void addCompetitorToCompetition(Competition n){
+	public void addCompetitorToCompetition(Competition competition){
 		try {
 			Statement s = con.createStatement();
 			s.executeUpdate("insert into "+COMPETITION_TABLE_NAME+
-					" values(0,'"+n.getSchool()+"','"+n.getName()+"','"+n.lvToDB(n.getlv())+"')");
+					" values(0,'"+competition.getSchool()+"','"+competition.getName()+"','"+competition.lvToDB(competition.getlv())+"')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -325,13 +325,13 @@ public class DataStore {
 	 * Saving it for being shown in "List all competitions".
 	 * @param input
 	 */
-	public void updateResult(List<Competition> input){
+	public void updateResult(List<Competition> competitions){
 		Statement s;
 		try {
 			s = con.createStatement();
-			for (Competition c: input) {
-				s.executeUpdate("update "+COMPETITION_TABLE_NAME+" set score='"+c.getScore()+
-						"' where name='"+c.getName()+"' and level='"+c.getlv().name()+"'");
+			for (Competition competition: competitions) {
+				s.executeUpdate("update "+COMPETITION_TABLE_NAME+" set score='"+competition.getScore()+
+						"' where name='"+competition.getName()+"' and level='"+competition.getlv().name()+"'");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
