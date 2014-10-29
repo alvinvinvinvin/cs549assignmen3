@@ -482,7 +482,11 @@ public class Operation {
 					if (0 < option && option <= LEVEL.values().length) {
 						String level = LEVEL.values()[option-1].name();//Get the name of level user chose.
 						String lvString = LEVEL.values()[option-1].toString();//Get the output string of level user chose.
-						System.out.println("Notice this is a random result, not from database.");
+						System.out.print("\n\n\n\n");
+						System.out.println("*********************************************************");
+						System.out.println("*  Notice this is a random result, NOT from database.   *");
+						System.out.println("*********************************************************");
+						System.out.println();
 						System.out.println("The competition result of level "+lvString+" is:");
 						/**
 						 * Notice that the @ds.getCompetitionByLv method only generate random result for one time.
@@ -503,6 +507,9 @@ public class Operation {
 						//Get the competition list divided by school.
 						List<List<Competition>> n = rmi.divide(randomScoreCompetitions);
 						System.out.println(rmi.toString(n));//Print the winning school in particular level.
+						System.out.println();
+						System.out
+						.println("--------------------------------------------------------------------------------");
 						while (true) {
 							System.out
 									.println("For saving these random results to database please enter \"y\". "
@@ -567,7 +574,11 @@ public class Operation {
 					if (0 < option && option <= LEVEL.values().length) {
 						String level = LEVEL.values()[option-1].name();//Get the name of level user chose.
 						String lvString = LEVEL.values()[option-1].toString();//Get the output string of level user chose.
-						System.out.println("Notice this result below is from database, not randomly generated.");
+						System.out.print("\n\n\n\n");
+						System.out.println("**********************************************************************");
+						System.out.println("* Notice this result below is from database, NOT randomly generated. *");
+						System.out.println("**********************************************************************");
+						System.out.println();
 						System.out.println("The competition result of level "+lvString+" is:");
 						/**
 						 * Notice that the @ds.getCompetitionFromDbByLv method only get result from database for displaying.
@@ -587,6 +598,7 @@ public class Operation {
 						//Get the competition list divided by school.
 						List<List<Competition>> n = rmi.divide(competitions);
 						System.out.println(rmi.toString(n));//Print the winning school in particular level.
+						System.out.println();
 						System.out
 						.println("--------------------------------------------------------------------------------");
 					} else
