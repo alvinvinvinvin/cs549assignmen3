@@ -148,7 +148,6 @@ public class DataStore {
 			while(r.next()){
 				c.add(
 						new Competition(
-								Integer.parseInt(r.getString("score")),
 								r.getString("school"),
 								r.getString("name"),
 								r.getString("level")));
@@ -195,8 +194,8 @@ public class DataStore {
 	public void addCompetitorToCompetition(Competition n){
 		try {
 			Statement s = con.createStatement();
-			s.executeUpdate("insert into "+COMPETITION_TABLE_NAME+" values('"
-					+n.getScore()+"','"+n.getSchool()+"','"+n.getName()+"','"+n.lvToDB(n.getlv())+"')");
+			s.executeUpdate("insert into "+COMPETITION_TABLE_NAME+
+					" values(0,'"+n.getSchool()+"','"+n.getName()+"','"+n.lvToDB(n.getlv())+"')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -265,7 +264,7 @@ public class DataStore {
 			s=con.createStatement();
 			ResultSet r = s.executeQuery("select * from "+COMPETITION_TABLE_NAME);
 			while(r.next()){
-				competitions.add(new Competition(Integer.parseInt(r.getString("score")), 
+				competitions.add(new Competition(Integer.parseInt(r.getString("score")),
 								r.getString("school"),r.getString("name"),r.getString("level")));
 			}
 		} catch (SQLException e) {
@@ -277,6 +276,7 @@ public class DataStore {
 	
 	/**
 	 * This method will return a list of competitions by the specific level inputed by user.
+	 * In addition it will generate a random score for each competition.
 	 * @param lv The level of competition.
 	 * @return competitions The result of querying.
 	 */
@@ -287,7 +287,7 @@ public class DataStore {
 			s=con.createStatement();
 			ResultSet r = s.executeQuery("select * from "+COMPETITION_TABLE_NAME+" where level='"+lv+"'");
 			while(r.next()){
-				competitions.add(new Competition(Integer.parseInt(r.getString("score")), 
+				competitions.add(new Competition(
 								r.getString("school"),r.getString("name"),r.getString("level")));
 			}
 		} catch (SQLException e) {
@@ -298,19 +298,66 @@ public class DataStore {
 	}
 	
 	/**
+	 * This method will return a list of competitions by the specific level inputed by user
+	 * from existed records in database.
+	 * @param lv The level of competition.
+	 * @return competitions The result of querying.
+	 */
+	public List<Competition> getCompetitionFromDbByLv(String lv){
+		Statement s;
+		List<Competition> competitions = new ArrayList<Competition>();
+		try {
+			s=con.createStatement();
+			ResultSet r = s.executeQuery("select * from "+COMPETITION_TABLE_NAME+" where level='"+lv+"'");
+			while(r.next()){
+				competitions.add(new Competition(Integer.parseInt(r.getString("score")),
+								r.getString("school"),r.getString("name"),r.getString("level")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return competitions;
+	}
+	
+	/**
+	 * This method will update the competition result to database.
+	 * Saving it for being shown in "List all competitions".
+	 * @param input
+	 */
+	public void updateResult(List<Competition> input){
+		Statement s;
+		try {
+			s = con.createStatement();
+			for (Competition c: input) {
+				s.executeUpdate("update "+COMPETITION_TABLE_NAME+" set score='"+c.getScore()+
+						"' where name='"+c.getName()+"' and level='"+c.getlv().name()+"'");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * The method will print the list of competitors
 	 * @param competitors The list of competitors we will print.
 	 */
 	public void printCompetitors(List<Competitor> competitors){
-		System.out.println("----------------------------");
-		System.out.println("Competitors:");
-		System.out.println("----------------------------");
-		System.out.printf("%-13s%-13s\n","name","school");
-		System.out.println("----------------------------");
-		for(Competitor c: competitors){
-			System.out.printf("%-13s%-13s\n", c.getName(),c.getSchool());
+		if (!competitors.isEmpty()) {
+			System.out.println("----------------------------");
+			System.out.println("Competitors:");
+			System.out.println("----------------------------");
+			System.out.printf("%-13s%-13s\n", "name", "school");
+			System.out.println("----------------------------");
+			for (Competitor c : competitors) {
+				System.out.printf("%-13s%-13s\n", c.getName(), c.getSchool());
+			}
+			System.out.println("----------------------------");
 		}
-		System.out.println("----------------------------");
+		else{
+			System.out.println("There is no any competitor yet.");
+		}
 	}
 	
 	/**
@@ -318,15 +365,25 @@ public class DataStore {
 	 * @param competitions The list of competitors we will print.
 	 */
 	public void printCompetitions(List<Competition> competitions){
-		System.out.println();
-		System.out.println("Competitions:");
-		System.out.println("-------------------------------------------------------------------------------");
-		System.out.printf("%-40s%-13s%-13s%-13s\n","level","name","school","score");
-		System.out.println("-------------------------------------------------------------------------------");
-		for(Competition c: competitions){
-			System.out.printf("%-40s%-13s%-13s%-13s\n",c.getLevel(),c.getName(),c.getSchool(),c.getScore());
+		if (!competitions.isEmpty()) {
+			System.out.println();
+			System.out.println("Competitions:");
+			System.out
+					.println("-------------------------------------------------------------------------------");
+			System.out.printf("%-40s%-13s%-13s%-13s\n", "level", "name",
+					"school", "score");
+			System.out
+					.println("-------------------------------------------------------------------------------");
+			for (Competition c : competitions) {
+				System.out.printf("%-40s%-13s%-13s%-13s\n", c.getLevel(),
+						c.getName(), c.getSchool(), c.getScore());
+			}
+			System.out
+					.println("-------------------------------------------------------------------------------");
 		}
-		System.out.println("-------------------------------------------------------------------------------");
+		else{
+			System.out.println("There is no any competition yet.");
+		}
 	}
 	
 	

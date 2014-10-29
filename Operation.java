@@ -24,9 +24,6 @@ import DAL.*;
 public class Operation {
 	private static final String db = "cs549assignment3.db";//File name of Database.
 	private static DataStore ds = new DataStore(db);//Instantiate a DataStore for building connection to database.
-	private static int lowerBound = 0;//The lower bound of score.
-	private static int upperBound = 100;//The upper bound of score.
-	private static int scoreRange = upperBound-lowerBound;//The range of a random score could be generated.
 	private static String mainMenuCmd = "bm";//The command for going back to main menu. Being used a lot during program.
 	//The notation for user explaining how to go back main menu.
 	private static String goMainMenu = " (Entering \""+mainMenuCmd+"\" will go back to Main Menu) ";
@@ -65,25 +62,29 @@ public class Operation {
 				case '2':
 					ds.printCompetitions(ds.getAllCompetition());
 					break;
-				//Add a competitor to competitor table.
+				//Get competition records from database based on level user input and counting the winner.
 				case '3':
+					printResultByLv(scan);
+					break;
+				//Generate the random result of each level's competition including winning student and winning school.
+				case '4':
+					printResult(scan);
+					break;
+				//Add a competitor to competitor table.
+				case '5':
 					addCompetitor(scan);
 					break;
 				//Delete a competitor from both competitor table and competition table.
-				case '4':
+				case '6':
 					deleteCompetitor(scan);
 					break;
 				//Add a existing competitor to competition with indicating the level.
-				case '5':
+				case '7':
 					addCompetitorToCompetition(scan);
 					break;
 				//Delete a enrolled competitor from existing competition with indicating the level.
-				case '6':
+				case '8':
 					deleteCompetitorFromCompetition(scan);
-					break;
-				//Generate the result of each level's competition including winning student and winning school.
-				case '7':
-					printResult(scan);
 					break;
 				//If user wants to exit program.
 				case '0':
@@ -108,29 +109,24 @@ public class Operation {
 	private static void printMainMenu(){
 		System.out.println();
 		System.out.println(
-				"------------------Main Menu--------------------\n"+
+				"--------------------Main Menu----------------------\n"+
 				"Please choose one option:\n"+
 				"---------------------------------------------------\n"+
 				"1. List all competitors.\n"+
 				"2. List all competitions.\n"+
-				"3. Add new competitors.\n"+
-				"4. Delete a competitors.\n"+
-				"5. Add a competitor to a competiton.\n"+
-				"6. Delete a competitor from a competiton.\n"+
-				"7. Generate a competiton with results in different levels.\n"+
+				"3. View the particular level of competition.\n"+
+				"4. Generate a competiton with random results in different levels.\n"+
+				"5. Add new competitors.\n"+
+				"6. Delete a competitors.\n"+
+				"7. Add a competitor to a competiton.\n"+
+				"8. Delete a competitor from a competiton.\n"+
 				"0. Exit.\n"+
 				"----------------------------------------------------\n"+
 				"Tips: "+goMainMenu+" whenever you want\n"+
 				"----------------------------------------------------");
 	}
 	
-	/**
-	 * Randomly generating a score based on the range set previously.
-	 * @return random score
-	 */
-	private static int getScore(){
-		return (new Random().nextInt(scoreRange))+ lowerBound;
-	}
+	
 	
 	/**
 	 * Checking whether the input is a numerical for determining if it is a valid option number or not.
@@ -150,7 +146,7 @@ public class Operation {
 			System.out.println("please input student name "+goMainMenu+":");
 			String name = scan.next();
 			//If the command is not the command making program going back to main menu.
-			if (!name.equalsIgnoreCase(mainMenuCmd)) { 
+			if (!name.equalsIgnoreCase(mainMenuCmd)) {
 				//Checking whether the name of competitor exists or not.
 				boolean isExisting = ds.checkExistingOfCompetitor(name);
 				if (isExisting) {
@@ -216,12 +212,10 @@ public class Operation {
 									String level = LEVEL.values()[index-1].name();
 									//Checking whether the competitor has already existed in particular level of competition or not.
 									if (!ds.checkExistingOfCompetitionWithLv(name, level)) {
-										int score =getScore();//Generate a random score right before insert this competitor to competition.
-										//Get a instantiation of competitor by name.
 										Competitor c = ds.getCompetitorFromCompetitorTableByName(name);
 										//Add this competitor to competition with score and level user chose.
 										ds.addCompetitorToCompetition(new Competition(
-												score, c.getSchool(), c.getName(), level));
+												c.getSchool(), c.getName(), level));
 										System.out.println("Adding successful.");
 										System.out.println();
 										//Display all competitions again to show user the result of adding.
@@ -334,7 +328,7 @@ public class Operation {
 	 */
 	private static void deleteCompetitorFromCompetition(Scanner scan){
 		//If there is some competition in database.
-		while (!ds.getAllCompetition().isEmpty()) {
+		while (true) {
 			//Display all competitions
 			ds.printCompetitions(ds.getAllCompetition());
 			System.out
@@ -453,7 +447,6 @@ public class Operation {
 			} else
 				return;//If user wants to go back to main menu.
 		}
-		System.out.println("There is no any competition yet.");
 	}
 	
 	/**
@@ -489,20 +482,125 @@ public class Operation {
 					if (0 < option && option <= LEVEL.values().length) {
 						String level = LEVEL.values()[option-1].name();//Get the name of level user chose.
 						String lvString = LEVEL.values()[option-1].toString();//Get the output string of level user chose.
+						System.out.print("\n\n\n\n");
+						System.out.println("*********************************************************");
+						System.out.println("*  Notice this is a random result, NOT from database.   *");
+						System.out.println("*********************************************************");
+						System.out.println();
 						System.out.println("The competition result of level "+lvString+" is:");
-						//TODO: display result.
+						/**
+						 * Notice that the @ds.getCompetitionByLv method only generate random result for one time.
+						 * In other words, this portion is the ONLY ONE TIME during the whole program to generate a random 
+						 * result based on the current record information which is without any score or with old score from database.
+						 */
+						List<Competition> randomScoreCompetitions = ds.getCompetitionByLv(level);
 						//Display all competitions based on the level user chose.
-						ds.printCompetitions(ds.getCompetitionByLv(level));
+						ds.printCompetitions(randomScoreCompetitions);
 						/**
 						 * Reusing those methods or interface below from Yuanyuan Kang.
 						 * For more details please go check the corresponding class.
 						 */
 						ReusingMethodsInterface rmi = new ReusingMethods();//Initialize a interface.
-						System.out.println(rmi.printWinner(ds.getCompetitionByLv(level)));//Print the winner student in particular level.
+						System.out.println(rmi.printWinner(randomScoreCompetitions));//Print the winner student in particular level.
 						System.out
 						.println("--------------------------------------------------------------------------------");
-						List<List<Competition>> n = rmi.divide(ds.getCompetitionByLv(level));//Get the competition list divided by school.
+						//Get the competition list divided by school.
+						List<List<Competition>> n = rmi.divide(randomScoreCompetitions);
 						System.out.println(rmi.toString(n));//Print the winning school in particular level.
+						System.out.println();
+						System.out
+						.println("--------------------------------------------------------------------------------");
+						while (true) {
+							System.out
+									.println("For saving these random results to database please enter \"y\". "
+											+ "Entering \"n\" for going backward.\n"
+											+ goMainMenu);
+							String save = scan.next();
+							if (save.equalsIgnoreCase(mainMenuCmd)) {
+								return;//If user wants to go back to main menu.
+							} else {
+								if (save.equalsIgnoreCase("y")) {
+									//update these random results to database.
+									ds.updateResult(randomScoreCompetitions);
+									System.out.println("Updating successful.");
+									break;
+								} else if (save.equalsIgnoreCase("n")) {
+									break;//If user does't want to update them.
+								} else {
+									System.out
+											.println("please input valid command.");
+								}
+							}
+						}
+					} else
+						System.out.println("Please input valid command.");
+				}else
+					System.out.println("Please input valid command.");
+			}
+		}
+	}
+	
+	/**
+	 * This method will get particular level competition result from database instead of generating randomly.
+	 * And then it will figure out the winner and display the result.
+	 * @param scan
+	 */
+	private static void printResultByLv(Scanner scan){
+		while (true) {
+			System.out.println();
+			System.out.println("Please choose a level:");
+			System.out
+					.println("--------------------------------------------------------------------------------");
+			//Print all levels by order from LEVEL enumeration.
+			int i = 0;
+			for (LEVEL l : LEVEL.values()) {
+				System.out.println("" + (i + 1) + ". " + l.toString() + ".");
+				i++;
+			}
+			System.out
+					.println("--------------------------------------------------------------------------------");
+			System.out.println(goMainMenu);
+			String lv = scan.next();
+			//If user chose to go back to main menu.
+			if (lv.equalsIgnoreCase(mainMenuCmd)) {
+				return;
+			}
+			//If user didn't choose to go back to main menu.
+			else {
+				//If input is numerical.
+				if (numerical(lv)) {
+					int option = Integer.parseInt(lv);//Parse input to integer representing the order of level.
+					//If input is in valid range.
+					if (0 < option && option <= LEVEL.values().length) {
+						String level = LEVEL.values()[option-1].name();//Get the name of level user chose.
+						String lvString = LEVEL.values()[option-1].toString();//Get the output string of level user chose.
+						System.out.print("\n\n\n\n");
+						System.out.println("**********************************************************************");
+						System.out.println("* Notice this result below is from database, NOT randomly generated. *");
+						System.out.println("**********************************************************************");
+						System.out.println();
+						System.out.println("The competition result of level "+lvString+" is:");
+						/**
+						 * Notice that the @ds.getCompetitionFromDbByLv method only get result from database for displaying.
+						 * It is different point with which the method @printResult has above.
+						 */
+						List<Competition> competitions = ds.getCompetitionFromDbByLv(level);
+						//Display all competitions based on the level user chose.
+						ds.printCompetitions(competitions);
+						/**
+						 * Reusing those methods or interface below from Yuanyuan Kang.
+						 * For more details please go check the corresponding class.
+						 */
+						ReusingMethodsInterface rmi = new ReusingMethods();//Initialize a interface.
+						System.out.println(rmi.printWinner(competitions));//Print the winner student in particular level.
+						System.out
+						.println("--------------------------------------------------------------------------------");
+						//Get the competition list divided by school.
+						List<List<Competition>> n = rmi.divide(competitions);
+						System.out.println(rmi.toString(n));//Print the winning school in particular level.
+						System.out.println();
+						System.out
+						.println("--------------------------------------------------------------------------------");
 					} else
 						System.out.println("Please input valid command.");
 				}else

@@ -144,7 +144,7 @@ public class ReusingMethods implements ReusingMethodsInterface {
 				return result;
 			}
 		}
-		result = school+" has won this competition and the score is "+max;
+		result = school+" has won this competition and the score is "+max+"\n";
 		
 		return result;
 	}

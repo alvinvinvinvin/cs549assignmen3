@@ -1,4 +1,6 @@
 package model;
+import java.util.Random;
+
 import enums.Levels.LEVEL;
 /**   
 * Filename:    Competition.java   
@@ -19,6 +21,10 @@ import enums.Levels.LEVEL;
 * Oct 24, 2014  Han Chen      1.0     1.0 Version   
 */
 public class Competition implements Comparable<Competition> {
+	
+	private static int lowerBound = 0;//The lower bound of score.
+	private static int upperBound = 100;//The upper bound of score.
+	private static int scoreRange = upperBound-lowerBound;//The range of a random score could be generated.
 
 	private int score =0;
 	private String school = null;
@@ -29,6 +35,19 @@ public class Competition implements Comparable<Competition> {
 	 * Constructors.
 	 */
 	public Competition() {}
+	/**
+	 * @param score
+	 * @param school
+	 * @param name
+	 * @param level
+	 */
+	public Competition(String school, String name, String level) {
+		setScore();
+		this.school = school;
+		this.name = name;
+		this.level = convertLv(level);
+	}
+	
 	/**
 	 * @param score
 	 * @param school
@@ -50,8 +69,8 @@ public class Competition implements Comparable<Competition> {
 	/**
 	 * @param score the score to set
 	 */
-	public void setScore(int score) {
-		this.score = score;
+	public void setScore() {
+		this.score = generateScore();
 	}
 	/**
 	 * @return the school
@@ -151,6 +170,14 @@ public class Competition implements Comparable<Competition> {
 	public String toString() {
 		return "<" + this.getLevel() + "	 " + this.getName() + "	 "
 				+ this.getSchool() + " " + this.getScore() + ">\n";
+	}
+	
+	/**
+	 * Randomly generating a score based on the range set previously.
+	 * @return random score
+	 */
+	private static int generateScore(){
+		return (new Random().nextInt(scoreRange))+ lowerBound;
 	}
 	
 	
